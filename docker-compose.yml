@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  bnmoboxd-rest-db:
+    image: postgres:13.4
+    restart: always
+    hostname: binotify-rest-db
+    networks:
+      - bnmoboxd-rest-app
+    healthcheck:
+      test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    env_file: .env
+    ports:
+      - "8003:5432"
+  bnmoboxd-rest-api:
+    build: .
+    hostname: bnmoboxd-rest-api
+    container_name: bnmoboxd-rest-api
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - bnmoboxd-rest-app
+    depends_on:
+      bnmoboxd-rest-db:
+        condition: service_healthy
+
+networks:
+  bnmoboxd-rest-app:
