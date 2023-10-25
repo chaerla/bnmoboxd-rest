@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int             @id @default(autoincrement())
+  username String          @unique @db.VarChar(255)
+  password String          @db.VarChar(255)
+  email    String          @unique @db.VarChar(255)
+  name     String          @db.VarChar(255)
+  isAdmin  Boolean         @default(false) @map("is_admin")
+  Review   CuratorReview[]
+
+  @@map("users")
+}
+
+model CuratorReview {
+  id     Int    @id @default(autoincrement())
+  rating Int
+  review String @db.Text
+  filmId Int    @map("film_id")
+  User   User?  @relation(fields: [userId], references: [id])
+  userId Int?   @map("user_id")
+
+  @@map("curator_reviews")
+}
