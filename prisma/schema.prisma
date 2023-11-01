@@ -8,24 +8,27 @@ datasource db {
 }
 
 model User {
-  id       Int             @id @default(autoincrement())
-  username String          @unique @db.VarChar(255)
-  password String          @db.VarChar(255)
-  email    String          @unique @db.VarChar(255)
-  name     String          @db.VarChar(255)
-  isAdmin  Boolean         @default(false) @map("is_admin")
-  Review   CuratorReview[]
+  id        Int             @id @default(autoincrement())
+  username  String          @unique @db.VarChar(255)
+  password  String          @db.VarChar(255)
+  email     String          @unique @db.VarChar(255)
+  firstName String          @map("first_name") @db.VarChar(255)
+  lastName  String?         @map("last_name")
+  isAdmin   Boolean         @default(false) @map("is_admin")
+  Review    CuratorReview[]
 
   @@map("users")
 }
 
 model CuratorReview {
-  id     Int    @id @default(autoincrement())
-  rating Int
-  review String @db.Text
-  filmId Int    @map("film_id")
-  User   User?  @relation(fields: [userId], references: [id])
-  userId Int?   @map("user_id")
+  id        Int      @id @default(autoincrement())
+  rating    Int
+  review    String   @db.Text
+  filmId    Int      @map("film_id")
+  userId    Int?     @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  User      User?    @relation(fields: [userId], references: [id])
 
   @@map("curator_reviews")
 }
