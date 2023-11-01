@@ -10,6 +10,7 @@ export const handleRequest = (handler: (req: Request) => Promise<BaseResponse>) 
       res.status(status || StatusCodes.OK).send({ message: message || ReasonPhrases.OK, data });
       next();
     } catch (err) {
+      console.log(err);
       if (err instanceof ApplicationError) {
         return next(err);
       }
