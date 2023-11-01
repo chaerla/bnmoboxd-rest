@@ -6,6 +6,7 @@ export interface RequestSchema {
   params?: AnyZodObject;
   body?: AnyZodObject;
   query?: AnyZodObject;
+  user?: AnyZodObject;
 }
 
 export const validate = (schema: AnyZodObject, data: any) => {
@@ -14,6 +15,7 @@ export const validate = (schema: AnyZodObject, data: any) => {
     // @ts-ignore
     throw new BadRequest('Validation Error', result.error.flatten());
   }
+  return result.data;
 };
 
 export const validateRequest = ({ params, body, query }: RequestSchema) => {
@@ -21,13 +23,13 @@ export const validateRequest = ({ params, body, query }: RequestSchema) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (params) {
-        validate(params, req.params);
+        req.params = validate(params, req.params);
       }
       if (body) {
-        validate(body, req.body);
+        req.body = validate(body, req.body);
       }
       if (query) {
-        validate(query, req.query);
+        req.query = validate(query, req.query);
       }
       next();
     } catch (err) {
