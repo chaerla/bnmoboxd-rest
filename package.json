@@ -17,6 +17,9 @@
     "prisma:seed": "npx prisma db seed",
     "prisma:reset": "npx prisma migrate reset"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
