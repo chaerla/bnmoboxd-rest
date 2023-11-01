@@ -4,7 +4,8 @@ export interface IInsertUser {
   username: string;
   password: string;
   email: string;
-  name: string;
+  firstName: string;
+  lastName: string;
 }
 class UserRepository {
   getUserById = async (id: number) => {
