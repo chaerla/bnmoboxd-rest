@@ -2,8 +2,9 @@ import express from 'express';
 import Controller from '@interfaces/controller';
 import compression from 'compression';
 import helmet from 'helmet';
+import cors from 'cors';
 import { errorMiddleware } from '@middlewares/error.middleware';
-import { ENV, PORT } from '@config';
+import { CREDENTIALS, ENV, ORIGIN, PORT } from '@config';
 
 class Application {
   public app: express.Application;
@@ -14,6 +15,7 @@ class Application {
     this.app = express();
     this.env = ENV;
     this.port = PORT;
+    this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
     this.app.use(express.json());
     this.app.use(compression());
     this.app.use(helmet());
