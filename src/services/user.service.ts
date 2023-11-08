@@ -19,10 +19,19 @@ class UserService {
     }
     return user;
   };
+
   login = async ({ username, password }: LoginDto) => {
     const user = await this.findUserByUsername(username);
     if (!(await bcrypt.compare(password, user.password))) {
       throw new Unauthorized('Invalid Credentials');
+    }
+
+    if (user.UserVerification.status == 'PENDING') {
+      throw new Unauthorized("We're still verifying your account");
+    }
+
+    if (user.UserVerification.status == 'REJECTED') {
+      throw new Unauthorized('Your account is not eligible');
     }
 
     delete user.password;
