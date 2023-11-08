@@ -28,7 +28,6 @@ class CuratorReviewService {
 
   getReviews = async (userId: number, options: GetReviewsOptions) => {
     const { reviews, count } = await this.curatorReviewRepository.getReviewsByCurator(userId, options);
-    console.log(reviews);
     return {
       reviews: await this.mapReviewsWithTitle(reviews),
       count,

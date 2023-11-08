@@ -2,7 +2,7 @@ import Controller from '@interfaces/controller';
 import CuratorReviewService from '@/services/curator-review.service';
 import { Router } from 'express';
 import { handleRequest } from '@utils/handle-request';
-import { authMiddleware, RequestWithUser } from '@middlewares/auth.middleware';
+import { AuthMiddleware, RequestWithUser } from '@middlewares/auth.middleware';
 import { validateRequest } from '@middlewares/validate.middleware';
 import {
   deleteCuratorReviewSchema,
@@ -19,9 +19,11 @@ class CuratorReviewController implements Controller {
   public path = '/curator-review';
   public router = Router();
   private curatorReviewService: CuratorReviewService;
+  private authMiddleware: AuthMiddleware;
   constructor() {
     const curatorReviewRepository = new CuratorReviewRepository();
     const phpApi = new PhpApi();
+    this.authMiddleware = new AuthMiddleware();
     this.curatorReviewService = new CuratorReviewService(curatorReviewRepository, phpApi);
     this.initializeRoutes();
   }
@@ -56,12 +58,16 @@ class CuratorReviewController implements Controller {
   };
 
   private initializeRoutes() {
-    this.router.get(`${this.path}/:id`, [authMiddleware, validateRequest(getCuratorReviewSchema)], handleRequest(this.getReview));
-    this.router.get(`${this.path}/`, [authMiddleware], validateRequest(getCuratorReviewsSchema), handleRequest(this.getReviews));
-    this.router.post(`${this.path}`, [authMiddleware, validateRequest(postCuratorReviewSchema)], handleRequest(this.postReview));
-    this.router.put(`${this.path}/:id`, [authMiddleware, validateRequest(putCuratorReviewSchema)], handleRequest(this.putReview));
-    this.router.delete(`${this.path}/:id`, [authMiddleware, validateRequest(deleteCuratorReviewSchema)], handleRequest(this.deleteReview));
-    this.router.get(`${this.path}/protected`, [authMiddleware], handleRequest(this.protectedRoute));
+    this.router.get(`${this.path}/:id`, [this.authMiddleware.verifyUser, validateRequest(getCuratorReviewSchema)], handleRequest(this.getReview));
+    this.router.get(`${this.path}/`, [this.authMiddleware.verifyUser], validateRequest(getCuratorReviewsSchema), handleRequest(this.getReviews));
+    this.router.post(`${this.path}`, [this.authMiddleware.verifyUser, validateRequest(postCuratorReviewSchema)], handleRequest(this.postReview));
+    this.router.put(`${this.path}/:id`, [this.authMiddleware.verifyUser, validateRequest(putCuratorReviewSchema)], handleRequest(this.putReview));
+    this.router.delete(
+      `${this.path}/:id`,
+      [this.authMiddleware.verifyUser, validateRequest(deleteCuratorReviewSchema)],
+      handleRequest(this.deleteReview),
+    );
+    this.router.get(`${this.path}/protected`, [this.authMiddleware.verifyUser], handleRequest(this.protectedRoute));
   }
 }
 
