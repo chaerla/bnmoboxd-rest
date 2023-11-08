@@ -21,6 +21,9 @@ class UserRepository {
       where: {
         username,
       },
+      include: {
+        UserVerification: true,
+      },
     });
   };
 
@@ -34,7 +37,14 @@ class UserRepository {
 
   addUser = async (data: IInsertUser) => {
     return await prisma.user.create({
-      data,
+      data: {
+        ...data,
+        UserVerification: {
+          create: {
+            status: 'PENDING',
+          },
+        },
+      },
     });
   };
 }
