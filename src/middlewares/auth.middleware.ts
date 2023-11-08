@@ -3,33 +3,68 @@ import Unauthorized from '@errors/unauthorized.error';
 import jwt from 'jsonwebtoken';
 import { SECRET_KEY } from '@config';
 import { User } from '@prisma/client';
+import UserService from '@/services/user.service';
+import UserRepository from '@/repositories/user.repository';
+import Forbidden from '@errors/forbidden.error';
 
 export type RequestWithUser = Request & {
   user: User;
 };
 
-// @ts-ignore
-export const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
-  const bearerHeader = req.headers['authorization'];
-
-  if (!bearerHeader) {
-    return next(new Unauthorized());
+export class AuthMiddleware {
+  private userService: UserService;
+  constructor() {
+    const userRepository = new UserRepository();
+    this.userService = new UserService(userRepository);
   }
 
-  const bearer = bearerHeader.split(' ');
+  private getToken(req: RequestWithUser) {
+    const bearerHeader = req.headers['authorization'];
 
-  if (bearer.length != 2 || bearer[0] != 'Bearer') {
-    return next(new Unauthorized());
-  }
-
-  const token = bearer[1];
-
-  await jwt.verify(token, SECRET_KEY, (err, decoded) => {
-    if (err || !decoded.user) {
-      if (err.name === 'TokenExpiredError') return next(new Unauthorized('Token expired'));
-      return next(new Unauthorized());
+    if (!bearerHeader) {
+      throw new Unauthorized();
     }
-    req.user = decoded.user;
-  });
-  next();
-};
+
+    const bearer = bearerHeader.split(' ');
+
+    if (bearer.length != 2 || bearer[0] != 'Bearer') {
+      throw new Unauthorized();
+    }
+    return bearer[1];
+  }
+
+  // @ts-ignore
+  verifyUser = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const token = this.getToken(req);
+      const decoded = await jwt.verify(token, SECRET_KEY);
+      if (!decoded.user) {
+        throw new Unauthorized();
+      }
+      const user = await this.userService.findUserByUsername(decoded.user.username);
+      req.user = user;
+      next();
+    } catch (err) {
+      if (err.name === 'TokenExpiredError') next(new Unauthorized('Token is expired'));
+      next(err);
+    }
+  };
+  // @ts-ignore
+  verifyAdmin = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const token = this.getToken(req);
+      const decoded = await jwt.verify(token, SECRET_KEY);
+      if (!decoded.user) {
+        throw new Unauthorized();
+      }
+      const user = await this.userService.findUserByUsername(decoded.user.username);
+      if (!user.isAdmin) {
+        throw new Forbidden();
+      }
+      next();
+    } catch (err) {
+      if (err.name === 'TokenExpiredError') next(new Unauthorized('Token is expired'));
+      next(err);
+    }
+  };
+}
