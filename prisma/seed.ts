@@ -14,6 +14,7 @@ async function seed() {
       isAdmin: true,
     },
   ];
+  const userVerifications = [];
   for (let i = 1; i <= 10; i++) {
     const user = {
       username: `user${i}`,
@@ -23,11 +24,16 @@ async function seed() {
       lastName: `${i}`,
       isAdmin: false,
     };
+    const userVerification = {
+      userId: i,
+      status: 'ACCEPTED',
+    };
     users.push(user);
+    userVerifications.push(userVerification);
   }
 
   await prisma.user.createMany({ data: users });
-
+  await prisma.userVerification.createMany({ data: userVerifications });
   const reviews = [];
   for (let i = 1; i <= 10; i++) {
     for (let j = 1; j <= 10; j++) {

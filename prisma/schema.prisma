@@ -7,28 +7,44 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum VerificationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
 model User {
-  id        Int             @id @default(autoincrement())
-  username  String          @unique @db.VarChar(255)
-  password  String          @db.VarChar(255)
-  email     String          @unique @db.VarChar(255)
-  firstName String          @map("first_name") @db.VarChar(255)
-  lastName  String?         @map("last_name")
-  isAdmin   Boolean         @default(false) @map("is_admin")
-  Review    CuratorReview[]
+  id               Int               @id @default(autoincrement())
+  username         String            @unique @db.VarChar(255)
+  password         String            @db.VarChar(255)
+  email            String            @unique @db.VarChar(255)
+  firstName        String            @map("first_name") @db.VarChar(255)
+  lastName         String?           @map("last_name")
+  isAdmin          Boolean           @default(false) @map("is_admin")
+  Review           CuratorReview[]
+  UserVerification UserVerification?
 
   @@map("users")
 }
 
 model CuratorReview {
-  id        Int      @id @default(autoincrement())
-  rating    Int
-  review    String   @db.Text
-  filmId    Int      @map("film_id")
-  userId    Int?     @map("user_id")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  User      User?    @relation(fields: [userId], references: [id])
+  id         Int      @id @default(autoincrement())
+  rating     Int
+  review     String   @db.Text
+  filmId     Int      @map("film_id")
+  userId     Int?     @map("user_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  isVerified Boolean  @default(false) @map("is_verified")
+  User       User?    @relation(fields: [userId], references: [id])
 
   @@map("curator_reviews")
+}
+
+model UserVerification {
+  userId Int                @id @default(autoincrement()) @map("user_id")
+  status VerificationStatus @default(PENDING) @map("status")
+  User   User?              @relation(fields: [userId], references: [id])
+
+  @@map("user_verification")
 }
