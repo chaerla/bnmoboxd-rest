@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import Unauthorized from '@errors/unauthorized.error';
 import jwt from 'jsonwebtoken';
-import { SECRET_KEY } from '@config';
+import { PHP_API_KEY, SECRET_KEY, SOAP_API_KEY } from '@config';
 import { User } from '@prisma/client';
 import UserService from '@/services/user.service';
 import UserRepository from '@/repositories/user.repository';
@@ -64,6 +64,37 @@ export class AuthMiddleware {
       next();
     } catch (err) {
       if (err.name === 'TokenExpiredError') next(new Unauthorized('Token is expired'));
+      next(err);
+    }
+  };
+  validateApiKey = (req: Request) => {
+    const apiKey = req.headers['x-api-key'];
+    if (!apiKey) {
+      throw new Unauthorized();
+    }
+    return apiKey;
+  };
+
+  validateSoap = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const apiKey = this.validateApiKey(req);
+      if (apiKey != SOAP_API_KEY) {
+        throw new Unauthorized();
+      }
+      next();
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  validatePhp = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const apiKey = this.validateApiKey(req);
+      if (apiKey != PHP_API_KEY) {
+        throw new Unauthorized();
+      }
+      next();
+    } catch (err) {
       next(err);
     }
   };
