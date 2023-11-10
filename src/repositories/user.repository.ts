@@ -7,6 +7,11 @@ export interface IInsertUser {
   firstName: string;
   lastName: string;
 }
+
+interface GetUsersOptions {
+  page?: number;
+  take?: number;
+}
 class UserRepository {
   getUserById = async (id: number) => {
     return await prisma.user.findFirst({
@@ -46,6 +51,30 @@ class UserRepository {
         },
       },
     });
+  };
+
+  getCurators = async (options: GetUsersOptions) => {
+    const take = options.take || 10;
+    const skip = options.page && options.page - 1 > 0 ? (options.page - 1) * take : 0;
+    const where = {
+      isAdmin: false,
+    };
+    const [users, count] = await prisma.$transaction([
+      prisma.user.findMany({
+        select: {
+          firstName: true,
+          lastName: true,
+          reviewCount: true,
+        },
+        where,
+        skip,
+        take,
+      }),
+      prisma.user.count({
+        where,
+      }),
+    ]);
+    return { users, count };
   };
 }
 
