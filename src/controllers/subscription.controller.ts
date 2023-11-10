@@ -1,82 +1,33 @@
 import Controller from '@interfaces/controller';
 import { Request, Router } from 'express';
 import { handleRequest } from '@utils/handle-request';
-import SoapApi from '@/adapters/soap-api';
 import { AuthMiddleware } from '@middlewares/auth.middleware';
 import { validateRequest } from '@middlewares/validate.middleware';
 import { getSubscriptionsSchema, putSubscriptionsSchema } from '@/domain/schemas/subscription.schema';
+import SubscriptionService from '@/services/subscription.service';
+import SoapApi from '@/adapters/soap-api';
 
 class SubscriptionController implements Controller {
   public path = '/subscription';
   public router = Router();
   private authMiddleware: AuthMiddleware;
-  private soapApi: SoapApi;
+  private subscriptionService: SubscriptionService;
   constructor() {
-    this.soapApi = new SoapApi();
+    const soapApi = new SoapApi();
     this.authMiddleware = new AuthMiddleware();
+    this.subscriptionService = new SubscriptionService(soapApi);
     this.initializeRoutes();
   }
 
   getSubscriptions = async (req: Request) => {
     // call to soap to get subscriptions
-    return {
-      data: {
-        subscriptions: [
-          {
-            curatorUsername: 'Curator 1',
-            subscriberUsername: 'User 1',
-            status: 'PENDING',
-          },
-          {
-            curatorUsername: 'Curator 2',
-            subscriberUsername: 'User 2',
-            status: 'ACCEPTED',
-          },
-          {
-            curatorUsername: 'Curator 3',
-            subscriberUsername: 'User 3',
-            status: 'REJECTED',
-          },
-          {
-            curatorUsername: 'Curator 4',
-            subscriberUsername: 'User 4',
-            status: 'REJECTED',
-          },
-          {
-            curatorUsername: 'Curator 5',
-            subscriberUsername: 'User 5',
-            status: 'REJECTED',
-          },
-          {
-            curatorUsername: 'Curator 6',
-            subscriberUsername: 'User 6',
-            status: 'PENDING',
-          },
-          {
-            curatorUsername: 'Curator 7',
-            subscriberUsername: 'User 7',
-            status: 'ACCEPTED',
-          },
-          {
-            curatorUsername: 'Curator 8',
-            subscriberUsername: 'User 8',
-            status: 'PENDING',
-          },
-        ],
-        count: 8,
-      },
-    };
+    const data = await this.subscriptionService.getSubscriptions(req.query);
+    return { data };
   };
   putSubscription = async (req: Request) => {
-    console.log(req);
+    const data = await this.subscriptionService.putSubscription(req.body);
     // call to soap to update subs status
-    return {
-      data: {
-        curatorUsername: 'Curator 8',
-        subscriberUsername: 'User 8',
-        status: 'PENDING',
-      },
-    };
+    return { data };
   };
   private initializeRoutes() {
     this.router.get(`${this.path}`, [this.authMiddleware.verifyAdmin, validateRequest(getSubscriptionsSchema)], handleRequest(this.getSubscriptions));
