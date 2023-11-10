@@ -1,5 +1,6 @@
 import { RequestSchema } from '@middlewares/validate.middleware';
 import { z } from 'zod';
+import { paginationSchema } from '@/domain/schemas/index.schema';
 
 export const getCuratorReviewSchema: RequestSchema = {
   params: z.object({
@@ -27,16 +28,7 @@ export const putCuratorReviewSchema: RequestSchema = {
 };
 
 export const getCuratorReviewsSchema: RequestSchema = {
-  query: z.object({
-    page: z
-      .string()
-      .transform(page => parseInt(page))
-      .optional(),
-    take: z
-      .string()
-      .transform(take => parseInt(take))
-      .optional(),
-  }),
+  query: paginationSchema,
 };
 
 export const deleteCuratorReviewSchema: RequestSchema = getCuratorReviewSchema;

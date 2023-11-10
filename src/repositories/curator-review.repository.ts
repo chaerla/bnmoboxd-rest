@@ -21,24 +21,29 @@ class CuratorReviewRepository {
   getReviewsByCurator = async (userId: number, options: GetReviewsOptions) => {
     const take = options.take || 10;
     const skip = options.page && options.page - 1 > 0 ? (options.page - 1) * take : 0;
-    const count = await prisma.curatorReview.count({
-      where: {
-        userId,
-      },
-    });
-
-    const reviews = await prisma.curatorReview.findMany({
-      where: {
-        userId,
-      },
-      skip,
-      take,
-    });
+    const [reviews, count] = await prisma.$transaction([
+      prisma.curatorReview.findMany({
+        where: {
+          userId,
+        },
+        skip,
+        take,
+      }),
+      prisma.curatorReview.count({
+        where: {
+          userId,
+        },
+      }),
+    ]);
     return { reviews, count };
   };
 
   insertReview = async (data: IInsertReview) => {
-    return await prisma.curatorReview.create({ data });
+    const [review] = await prisma.$transaction([
+      prisma.curatorReview.create({ data }),
+      prisma.user.update({ where: { id: data.userId }, data: { reviewCount: { increment: 1 } } }),
+    ]);
+    return review;
   };
 
   updateReview = async (id: number, data: IUpdateReview) => {
@@ -48,10 +53,13 @@ class CuratorReviewRepository {
     });
   };
 
-  deleteReview = async (id: number) => {
-    await prisma.curatorReview.delete({
-      where: { id },
-    });
+  deleteReview = async (id: number, userId: number) => {
+    await prisma.$transaction([
+      prisma.curatorReview.delete({
+        where: { id },
+      }),
+      prisma.user.update({ where: { id: userId }, data: { reviewCount: { decrement: 1 } } }),
+    ]);
   };
 
   async getReviewById(id: number) {

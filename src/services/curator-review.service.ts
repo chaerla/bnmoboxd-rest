@@ -52,7 +52,7 @@ class CuratorReviewService {
 
   deleteReview = async (id: number, userId: number) => {
     const review = await this.getReview(id, userId);
-    await this.curatorReviewRepository.deleteReview(id);
+    await this.curatorReviewRepository.deleteReview(id, userId);
     return review;
   };
 }
