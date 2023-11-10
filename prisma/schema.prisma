@@ -21,6 +21,7 @@ model User {
   firstName        String            @map("first_name") @db.VarChar(255)
   lastName         String?           @map("last_name")
   isAdmin          Boolean           @default(false) @map("is_admin")
+  reviewCount      Int               @default(0)
   Review           CuratorReview[]
   UserVerification UserVerification?
 
