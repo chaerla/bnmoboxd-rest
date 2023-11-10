@@ -8,20 +8,13 @@ WORKDIR /app
 COPY package*.json ./
 COPY pnpm-lock.yaml ./
 
-# Install dependencies using pnpm
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
-
 # Add files
 COPY tsconfig.json ./tsconfig.json
 COPY .swcrc ./.swcrc
-COPY src ./src
+COPY prisma/ ./prisma/
 
-# Generate prisma client
+RUN npm install
 RUN npx prisma generate
-
-# Build dist
-RUN pnpm run build:tsc
-
 # Copy the built code to the container
 COPY dist ./dist
 

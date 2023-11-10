@@ -24,6 +24,8 @@ services:
       - .env
     networks:
       - bnmoboxd-rest-app
+    ports:
+      - "3000:3000"
     depends_on:
       bnmoboxd-rest-db:
         condition: service_healthy
