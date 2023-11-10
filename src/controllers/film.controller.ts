@@ -2,20 +2,22 @@ import Controller from '@interfaces/controller';
 import { Request, Router } from 'express';
 import { handleRequest } from '@utils/handle-request';
 import { validateRequest } from '@middlewares/validate.middleware';
-import PhpApi from '@/adapters/php-api';
 import { getFilmsSchema } from '@/domain/schemas/film.schema';
+import FilmService from '@/services/film.service';
+import PhpApi from '@/adapters/php-api';
 
 class FilmController implements Controller {
   public path = '/film';
   public router = Router();
-  private phpApi: PhpApi;
+  private filmService: FilmService;
   constructor() {
-    this.phpApi = new PhpApi();
     this.initializeRoutes();
+    const phpApi = new PhpApi();
+    this.filmService = new FilmService(phpApi);
   }
 
   getFilms = async (req: Request) => {
-    const data = await this.phpApi.searchFilms({ ...req.query });
+    const data = await this.filmService.getFilms(req.query);
     return { data };
   };
 

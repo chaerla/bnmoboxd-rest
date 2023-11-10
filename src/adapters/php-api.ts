@@ -16,8 +16,8 @@ class PhpApi {
     });
   }
 
-  searchFilms = async (option: SearchFilmsOption) => {
-    const res = await this.api.get(`/films?search=${option.query}&page=${option.page}&take=${option.take}`);
+  searchFilms = async (options: SearchFilmsOption) => {
+    const res = await this.api.get(`/films?search=${options.query}&page=${options.page}&take=${options.take}`);
     return res.data.films.map(film => {
       return {
         id: film.id,
