@@ -13,7 +13,7 @@ import {
 } from '@/domain/schemas/curator-review.schema';
 import CuratorReviewRepository from '@/repositories/curator-review.repository';
 import { StatusCodes } from 'http-status-codes';
-import PhpApi from '@/adapters/php-api';
+import PhpApi from '@/clients/php-api';
 
 class CuratorReviewController implements Controller {
   public path = '/curator-review';

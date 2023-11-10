@@ -3,7 +3,7 @@ import { CreateCuratorReviewDto, UpdateCuratorReviewDto } from '@/domain/dtos/cu
 import { CuratorReview } from '@prisma/client';
 import NotFound from '@errors/not-found.error';
 import Forbidden from '@errors/forbidden.error';
-import PhpApi from '@/adapters/php-api';
+import PhpApi from '@/clients/php-api';
 
 class CuratorReviewService {
   constructor(

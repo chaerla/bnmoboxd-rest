@@ -1,4 +1,4 @@
-import PhpApi, { SearchFilmsOption } from '@/adapters/php-api';
+import PhpApi, { SearchFilmsOption } from '@/clients/php-api';
 
 class FilmService {
   constructor(private readonly phpApi: PhpApi) {}

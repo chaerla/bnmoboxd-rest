@@ -1,4 +1,4 @@
-import SoapApi from '@/adapters/soap-api';
+import SoapApi from '@/clients/soap-api';
 
 class SubscriptionService {
   constructor(private readonly soapApi: SoapApi) {}

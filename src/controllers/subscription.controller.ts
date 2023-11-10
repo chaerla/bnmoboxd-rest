@@ -5,7 +5,7 @@ import { AuthMiddleware } from '@middlewares/auth.middleware';
 import { validateRequest } from '@middlewares/validate.middleware';
 import { getSubscriptionsSchema, putSubscriptionsSchema } from '@/domain/schemas/subscription.schema';
 import SubscriptionService from '@/services/subscription.service';
-import SoapApi from '@/adapters/soap-api';
+import SoapApi from '@/clients/soap-api';
 
 class SubscriptionController implements Controller {
   public path = '/subscription';
