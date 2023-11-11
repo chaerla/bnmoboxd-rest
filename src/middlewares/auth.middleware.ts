@@ -67,35 +67,12 @@ export class AuthMiddleware {
       next(err);
     }
   };
-  validateApiKey = (req: Request) => {
+
+  validateApiKey = async (req: Request, res: Response, next: NextFunction) => {
     const apiKey = req.headers['x-api-key'];
-    if (!apiKey) {
-      throw new Unauthorized();
+    if (!apiKey || (apiKey != PHP_API_KEY && apiKey != SOAP_API_KEY)) {
+      next(new Unauthorized());
     }
-    return apiKey;
-  };
-
-  validateSoap = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const apiKey = this.validateApiKey(req);
-      if (apiKey != SOAP_API_KEY) {
-        throw new Unauthorized();
-      }
-      next();
-    } catch (err) {
-      next(err);
-    }
-  };
-
-  validatePhp = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const apiKey = this.validateApiKey(req);
-      if (apiKey != PHP_API_KEY) {
-        throw new Unauthorized();
-      }
-      next();
-    } catch (err) {
-      next(err);
-    }
+    next();
   };
 }
