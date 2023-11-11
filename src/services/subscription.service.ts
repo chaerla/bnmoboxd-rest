@@ -4,6 +4,7 @@ class SubscriptionService {
   constructor(private readonly soapApi: SoapApi) {}
   // to do add options interface
   getSubscriptions = async options => {
+    await this.soapApi.getAllSubscriptions();
     console.log(options);
     // to do : call soap api
     return {
