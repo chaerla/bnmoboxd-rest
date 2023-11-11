@@ -41,8 +41,7 @@ export class AuthMiddleware {
       if (!decoded.user) {
         throw new Unauthorized();
       }
-      const user = await this.userService.findUserByUsername(decoded.user.username);
-      req.user = user;
+      req.user = await this.userService.findUserByUsername(decoded.user.username);
       next();
     } catch (err) {
       if (err.name === 'TokenExpiredError') next(new Unauthorized('Token is expired'));
@@ -68,6 +67,7 @@ export class AuthMiddleware {
     }
   };
 
+  // @ts-ignore
   validateApiKey = async (req: Request, res: Response, next: NextFunction) => {
     const apiKey = req.headers['x-api-key'];
     if (!apiKey || (apiKey != PHP_API_KEY && apiKey != SOAP_API_KEY)) {
