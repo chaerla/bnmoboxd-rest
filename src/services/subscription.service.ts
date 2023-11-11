@@ -55,6 +55,7 @@ class SubscriptionService {
   };
 
   putSubscription = async payload => {
+    await this.soapApi.updateSubscriptionStatus();
     console.log(payload);
     // call to soap to update subs status
     return {

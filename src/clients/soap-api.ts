@@ -1,5 +1,5 @@
 import { REST_API_KEY, SOAP_BASE_URL } from '@config';
-import { createClient } from 'soap';
+import { Client, createClient } from 'soap';
 import ApplicationError from '@errors/application.error';
 
 class SoapApi {
@@ -9,20 +9,17 @@ class SoapApi {
   private postSubscriptionReq = async (funcName: string, payload: any) => {
     try {
       const url = `${this.BASE_URL}${this.SUBSCRIPTION_ENDPOINT}?wsdl`;
-
       const client = await this.createSoapClient(url);
       const result = await this.invokeSoapFunction(client, funcName, payload);
-      console.log(result);
       return result?.return || null;
     } catch (error) {
-      console.log(error);
       throw new ApplicationError();
     }
   };
 
-  private createSoapClient = (url: string): Promise<any> => {
+  private createSoapClient = (url: string): Promise<Client> => {
     return new Promise((resolve, reject) => {
-      createClient(url, (err: any, client: any) => {
+      createClient(url, (err: any, client: Client) => {
         if (err) {
           reject(err);
         } else {
@@ -32,7 +29,7 @@ class SoapApi {
     });
   };
 
-  private invokeSoapFunction = (client: any, funcName: string, payload: any): Promise<any> => {
+  private invokeSoapFunction = (client: Client, funcName: string, payload: any): Promise<any> => {
     return new Promise((resolve, reject) => {
       const header = {
         'x-api-key': REST_API_KEY,
@@ -60,6 +57,18 @@ class SoapApi {
     const response = await this.postSubscriptionReq(funcName, payload);
     console.log(response);
     return response;
+  };
+
+  updateSubscriptionStatus = async () => {
+    // const funcName = 'update';
+    // const payload = {
+    //   curatorUsername: 'user2',
+    //   subscriberUsername: 'user3',
+    //   status: 'ACCEPTED',
+    // };
+    //
+    // const response = await this.postSubscriptionReq(funcName, payload);
+    // return response;
   };
 }
 

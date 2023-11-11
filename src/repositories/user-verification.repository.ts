@@ -11,6 +11,15 @@ class UserVerificationRepository {
     const skip = options.page && options.page - 1 > 0 ? (options.page - 1) * take : 0;
     const count = await prisma.userVerification.count();
     const userVerifications = await prisma.userVerification.findMany({
+      select: {
+        User: {
+          select: {
+            username: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
       skip,
       take,
     });
