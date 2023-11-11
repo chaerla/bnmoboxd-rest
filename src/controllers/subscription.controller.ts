@@ -20,13 +20,11 @@ class SubscriptionController implements Controller {
   }
 
   getSubscriptions = async (req: Request) => {
-    // call to soap to get subscriptions
     const data = await this.subscriptionService.getSubscriptions(req.query);
     return { data };
   };
   putSubscription = async (req: Request) => {
     const data = await this.subscriptionService.putSubscription(req.body);
-    // call to soap to update subs status
     return { data };
   };
   private initializeRoutes() {
