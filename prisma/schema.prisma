@@ -29,15 +29,14 @@ model User {
 }
 
 model CuratorReview {
-  id         Int      @id @default(autoincrement())
-  rating     Int
-  review     String   @db.Text
-  filmId     Int      @map("film_id")
-  userId     Int?     @map("user_id")
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
-  isVerified Boolean  @default(false) @map("is_verified")
-  User       User?    @relation(fields: [userId], references: [id])
+  id        Int      @id @default(autoincrement())
+  rating    Int
+  review    String   @db.Text
+  filmId    Int      @map("film_id")
+  userId    Int?     @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  User      User?    @relation(fields: [userId], references: [id])
 
   @@map("curator_reviews")
 }
