@@ -28,7 +28,7 @@ export const putCuratorReviewSchema: RequestSchema = {
 };
 
 export const getCuratorReviewsSchema: RequestSchema = {
-  query: paginationSchema,
+  query: z.object({ ...paginationSchema }),
 };
 
 export const deleteCuratorReviewSchema: RequestSchema = getCuratorReviewSchema;

@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { paginationSchema } from '@/domain/schemas/index.schema';
 
 export const getSubscriptionsSchema: RequestSchema = {
-  query: paginationSchema,
+  query: z.object({ ...paginationSchema }),
 };
 
 export const putSubscriptionsSchema: RequestSchema = {

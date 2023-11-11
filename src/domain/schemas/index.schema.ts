@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const paginationSchema = z.object({
+export const paginationSchema = {
   page: z
     .string()
     .transform(page => parseInt(page))
@@ -9,4 +9,4 @@ export const paginationSchema = z.object({
     .string()
     .transform(take => parseInt(take))
     .optional(),
-});
+};
