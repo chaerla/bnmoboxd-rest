@@ -19,6 +19,7 @@ class UserVerificationRepository {
             lastName: true,
           },
         },
+        status: true,
       },
       skip,
       take,
