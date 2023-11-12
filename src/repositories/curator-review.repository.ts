@@ -26,6 +26,9 @@ class CuratorReviewRepository {
         where: {
           userId,
         },
+        orderBy: {
+          updatedAt: 'desc',
+        },
         skip,
         take,
       }),
