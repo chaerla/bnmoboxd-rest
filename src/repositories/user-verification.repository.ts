@@ -9,11 +9,19 @@ class UserVerificationRepository {
   getUserVerifications = async (options: GetVerificationOptions) => {
     const take = options.take || 10;
     const skip = options.page && options.page - 1 > 0 ? (options.page - 1) * take : 0;
-    const count = await prisma.userVerification.count();
+    const where = {
+      User: {
+        isAdmin: false,
+      },
+    };
+    const count = await prisma.userVerification.count({
+      where,
+    });
     const userVerifications = await prisma.userVerification.findMany({
       select: {
         User: {
           select: {
+            id: true,
             username: true,
             firstName: true,
             lastName: true,
@@ -21,8 +29,12 @@ class UserVerificationRepository {
         },
         status: true,
       },
+      where,
       skip,
       take,
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
     return { userVerifications, count };
   };
