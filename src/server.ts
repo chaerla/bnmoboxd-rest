@@ -5,6 +5,7 @@ import CuratorReviewController from '@controllers/curator-review.controller';
 import FilmController from '@controllers/film.controller';
 import SubscriptionController from '@controllers/subscription.controller';
 import CuratorController from '@controllers/curator.controller';
+import UserVerificationController from './controllers/user-verification.controller';
 
 const app = new Application([
   new AuthController(),
@@ -13,5 +14,6 @@ const app = new Application([
   new FilmController(),
   new SubscriptionController(),
   new CuratorController(),
+  new UserVerificationController(),
 ]);
 app.listen();
