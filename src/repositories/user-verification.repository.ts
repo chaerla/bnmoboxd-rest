@@ -39,6 +39,14 @@ class UserVerificationRepository {
     return { userVerifications, count };
   };
 
+  getUserVerification = async (userId: number) => {
+    return await prisma.userVerification.findFirst({
+      where: {
+        userId,
+      },
+    });
+  };
+
   updateUserVerification = async (userId: number, status: VerificationStatus) => {
     await prisma.userVerification.update({
       where: { userId },
