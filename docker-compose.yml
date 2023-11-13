@@ -6,29 +6,31 @@ services:
     restart: always
     hostname: binotify-rest-db
     networks:
-      - bnmoboxd-rest-app
+      - bnmoboxd-rest
     healthcheck:
       test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
       interval: 10s
       timeout: 3s
       retries: 5
-    env_file: .env
+    env_file: .env.production
     ports:
       - "8003:5432"
   bnmoboxd-rest-api:
     build: .
-    hostname: bnmoboxd-rest-api
-    container_name: bnmoboxd-rest-api
+    hostname: bnmoboxd-rest
+    container_name: bnmoboxd-rest
     restart: unless-stopped
     env_file:
-      - .env
+      - .env.production
     networks:
-      - bnmoboxd-rest-app
+      - bnmoboxd-rest
     ports:
       - "3000:3000"
+    volumes:
+      - ./dist:/app/dist
     depends_on:
       bnmoboxd-rest-db:
         condition: service_healthy
 
 networks:
-  bnmoboxd-rest-app:
+  bnmoboxd-rest:
