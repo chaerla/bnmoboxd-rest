@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import Unauthorized from '@errors/unauthorized.error';
 import jwt from 'jsonwebtoken';
-import { PHP_API_KEY, SECRET_KEY, SOAP_API_KEY } from '@config';
+import { REST_API_KEY, SECRET_KEY } from '@config';
 import { User } from '@prisma/client';
 import UserService from '@/services/user.service';
 import UserRepository from '@/repositories/user.repository';
@@ -70,7 +70,7 @@ export class AuthMiddleware {
   // @ts-ignore
   validateApiKey = async (req: Request, res: Response, next: NextFunction) => {
     const apiKey = req.headers['x-api-key'];
-    if (!apiKey || (apiKey != PHP_API_KEY && apiKey != SOAP_API_KEY)) {
+    if (!apiKey || apiKey != REST_API_KEY) {
       next(new Unauthorized());
     }
     next();
