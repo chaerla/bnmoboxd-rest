@@ -1,4 +1,4 @@
-import { REST_API_KEY, SOAP_BASE_URL } from '@config';
+import { SOAP_API_KEY, SOAP_BASE_URL } from '@config';
 import { Client, createClient } from 'soap';
 import ApplicationError from '@errors/application.error';
 
@@ -13,6 +13,7 @@ class SoapApi {
       const result = await this.invokeSoapFunction(client, funcName, payload);
       return result?.return || null;
     } catch (error) {
+      console.log(error);
       throw new ApplicationError();
     }
   };
@@ -32,13 +33,14 @@ class SoapApi {
   private invokeSoapFunction = (client: Client, funcName: string, payload: any): Promise<any> => {
     return new Promise((resolve, reject) => {
       const header = {
-        'x-api-key': REST_API_KEY,
+        'x-api-key': SOAP_API_KEY,
       };
 
       client[funcName](
         payload,
         (err: any, result: any) => {
           if (err) {
+            console.log(err);
             reject(err);
           } else {
             resolve(result);
