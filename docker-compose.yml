@@ -31,6 +31,15 @@ services:
     depends_on:
       bnmoboxd-rest-db:
         condition: service_healthy
+  redis:
+    image: "redis:latest"
+    hostname: redis
+    restart: always
+    env_file: .env.production
+    networks:
+      - bnmoboxd-rest
+    ports:
+      - "6379:6379"
 
 networks:
   bnmoboxd-rest:
