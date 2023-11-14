@@ -19,8 +19,8 @@ async function seed() {
     const user = {
       username: `user${i}`,
       password,
-      email: `user${i}@example.com`,
-      firstName: `User`,
+      email: `curator${i}@example.com`,
+      firstName: `Curator`,
       lastName: `${i}`,
       isAdmin: false,
       reviewCount: 10,
