@@ -104,6 +104,9 @@ class UserRepository {
       select['Review'] = {
         take,
         skip,
+        orderBy: {
+          createdAt: 'DESC',
+        },
       };
     }
 
