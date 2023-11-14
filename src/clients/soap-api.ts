@@ -11,6 +11,9 @@ class SoapApi {
       const url = `${this.BASE_URL}${this.SUBSCRIPTION_ENDPOINT}?wsdl`;
       const client = await this.createSoapClient(url);
       const result = await this.invokeSoapFunction(client, funcName, payload);
+      console.log(result);
+      console.log(result.response.subscriptions);
+      console.log(result.response.count);
       return result?.return || null;
     } catch (error) {
       console.log(error);
