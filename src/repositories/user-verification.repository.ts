@@ -1,7 +1,7 @@
 import prisma from '@/database/prisma';
 import { VerificationStatus } from '@prisma/client';
 
-interface GetVerificationOptions {
+export interface GetVerificationOptions {
   page?: number;
   take?: number;
 }

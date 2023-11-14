@@ -8,6 +8,7 @@ import NotFound from '@errors/not-found.error';
 import { type User } from '@prisma/client';
 import { SECRET_KEY } from '@config';
 import jwt from 'jsonwebtoken';
+import redis from '@utils/redis';
 
 class UserService {
   constructor(private userRepository: UserRepository) {}
@@ -46,6 +47,9 @@ class UserService {
     if (await this.userRepository.getUserByEmail(registerDto.email)) {
       throw new BadRequest('Validation Error', { email: 'Email is already taken' });
     }
+
+    const keys = await redis.keys(`userVerifications:*`);
+    await redis.del(keys);
 
     registerDto.password = await bcrypt.hash(registerDto.password, 10);
     const newUser = await this.userRepository.addUser(registerDto);

@@ -1,9 +1,17 @@
 import SoapApi from '@/clients/soap-api';
+import redis from '@utils/redis';
 
 class SubscriptionService {
+  private cacheKey = 'subscriptions';
   constructor(private readonly soapApi: SoapApi) {}
   // to do add options interface
   getSubscriptions = async options => {
+    const cacheKey = `${this.cacheKey}:${JSON.stringify(options)}`;
+    const cachedData = await redis.get(cacheKey);
+    if (cachedData) {
+      return JSON.parse(cachedData);
+    }
+
     await this.soapApi.getAllSubscriptions();
     console.log(options);
     // to do : call soap api
@@ -55,6 +63,9 @@ class SubscriptionService {
   };
 
   putSubscription = async payload => {
+    const keys = await redis.keys(`${this.cacheKey}:*`);
+    await redis.del(keys);
+
     await this.soapApi.updateSubscriptionStatus();
     console.log(payload);
     // call to soap to update subs status
