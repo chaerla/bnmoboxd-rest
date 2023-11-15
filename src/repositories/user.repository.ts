@@ -9,6 +9,12 @@ export interface IInsertUser {
   lastName: string;
 }
 
+export interface IUpdateUser {
+  firstName?: string;
+  lastName?: string;
+  bio?: string;
+  profileImage?: string;
+}
 interface GetUsersOptions {
   page?: number;
   take?: number;
@@ -105,7 +111,7 @@ class UserRepository {
         take,
         skip,
         orderBy: {
-          createdAt: 'DESC',
+          createdAt: 'desc',
         },
       };
     }
@@ -115,6 +121,15 @@ class UserRepository {
       where,
     });
   }
+
+  updateUser = async (data: IUpdateUser, userId: number) => {
+    return await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data,
+    });
+  };
 }
 
 export default UserRepository;

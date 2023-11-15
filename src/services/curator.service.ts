@@ -1,4 +1,4 @@
-import UserRepository, { GetCuratorDetailsOptions } from '@/repositories/user.repository';
+import UserRepository, { GetCuratorDetailsOptions, IUpdateUser } from '@/repositories/user.repository';
 import NotFound from '@errors/not-found.error';
 
 class CuratorService {
@@ -14,6 +14,10 @@ class CuratorService {
       throw new NotFound();
     }
     return curatorDetails;
+  };
+
+  updateCuratorDetails = async (data: IUpdateUser, userId: number) => {
+    return await this.userRepository.updateUser(data, userId);
   };
 }
 

@@ -7,9 +7,11 @@ export interface RequestSchema {
   body?: AnyZodObject;
   query?: AnyZodObject;
   user?: AnyZodObject;
+  file?: AnyZodObject;
 }
 
 export const validate = (schema: AnyZodObject, data: any) => {
+  console.log(data);
   const result = schema.safeParse({ ...data });
   if (!result.success) {
     // @ts-ignore

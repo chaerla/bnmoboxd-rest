@@ -16,7 +16,9 @@ class Application {
     this.env = ENV;
     this.port = PORT;
     this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
+    this.app.use('/static', express.static('public'));
     this.app.use(express.json());
+    this.app.use(express.urlencoded({ extended: true }));
     this.app.use(compression());
     this.app.use(helmet());
     this.app.use(express.urlencoded({ extended: true }));

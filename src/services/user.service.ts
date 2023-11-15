@@ -59,7 +59,7 @@ class UserService {
   };
 
   generateToken = async (user: User) => {
-    return await jwt.sign({ user }, SECRET_KEY, { expiresIn: '8h' });
+    return await jwt.sign({ user }, SECRET_KEY);
   };
 }
 
