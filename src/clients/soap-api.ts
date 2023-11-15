@@ -11,10 +11,7 @@ class SoapApi {
       const url = `${this.BASE_URL}${this.SUBSCRIPTION_ENDPOINT}?wsdl`;
       const client = await this.createSoapClient(url);
       const result = await this.invokeSoapFunction(client, funcName, payload);
-      console.log(result);
-      console.log(result.response.subscriptions);
-      console.log(result.response.count);
-      return result?.return || null;
+      return result?.response || null;
     } catch (error) {
       console.log(error);
       throw new ApplicationError();
@@ -55,25 +52,20 @@ class SoapApi {
     });
   };
 
-  getAllSubscriptions = async () => {
+  getAllSubscriptions = async options => {
     const funcName = 'getAll';
-    const payload = {};
 
-    const response = await this.postSubscriptionReq(funcName, payload);
-    console.log(response);
+    const response = await this.postSubscriptionReq(funcName, options);
+    console.log(`[SoapApi] Response from SOAP API: ${JSON.stringify(response)}`);
     return response;
   };
 
-  updateSubscriptionStatus = async () => {
-    // const funcName = 'update';
-    // const payload = {
-    //   curatorUsername: 'user2',
-    //   subscriberUsername: 'user3',
-    //   status: 'ACCEPTED',
-    // };
-    //
-    // const response = await this.postSubscriptionReq(funcName, payload);
-    // return response;
+  updateSubscriptionStatus = async options => {
+    const funcName = 'update';
+    
+    const response = await this.postSubscriptionReq(funcName, options);
+    console.log(`[SoapApi] Response from SOAP API: ${JSON.stringify(response)}`);
+    return response;
   };
 }
 
