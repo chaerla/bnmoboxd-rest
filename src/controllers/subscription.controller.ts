@@ -24,8 +24,8 @@ class SubscriptionController implements Controller {
     return { data };
   };
   putSubscription = async (req: Request) => {
-    const data = await this.subscriptionService.putSubscription(req.body);
-    return { data };
+    await this.subscriptionService.putSubscription(req.body);
+    return { message: 'Subscription status updated successfully' };
   };
   private initializeRoutes() {
     this.router.get(`${this.path}`, [this.authMiddleware.verifyAdmin, validateRequest(getSubscriptionsSchema)], handleRequest(this.getSubscriptions));
