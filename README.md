@@ -29,8 +29,6 @@ This service provides the following API endpoints
 
 ## Requirements
 1. Docker
-2. Node 16 or later
-3. NPM
 
 
 ## Installation
@@ -44,9 +42,29 @@ This service provides the following API endpoints
 2. Make a env file `.env.production`
 3. Fill the file `.env.production` referring to `env.example`, make sure to include the correct endpoint for the other services
 4. Open terminal and run `docker compose up -d`
-5. Run seeder `npx prisma:seed`
 
 ## Task
+| 13521044                     | 13521047 | 13521107 |
+|------------------------------|----------|----------|
+| Curator Review CRUD          |          |          |
+| GET films from PHP           |          |          |
+| Auth                         |          |          |
+| Project Initialization       |          |          |
+| Middlewares                  |          |          |
+| Error Handling               |          |          |
+| Docker                       |          |          |
+| User Verification Repository |          |          |
+| PHP Client                   |          |          |
+| SOAP Client                  |          |          |
+| Upload Profile Picture       |          |          |
+| Edit Profile                 |          |          |
+|                              |          |          |
+|                              |          |          |
+|                              |          |          |
+|                              |          |          |
+|                              |          |          |
+|                              |          |          |
+|                              |          |          |
 
 
 ## Bonus
