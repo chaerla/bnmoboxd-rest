@@ -49,7 +49,7 @@ class UserService {
     }
 
     const keys = await redis.keys(`userVerifications:*`);
-    await redis.del(keys);
+    if(keys.length > 0) await redis.del(keys);
 
     registerDto.password = await bcrypt.hash(registerDto.password, 10);
     const newUser = await this.userRepository.addUser(registerDto);

@@ -32,7 +32,7 @@ class UserVerificationService {
   // Update user's status
   updateUserVerification = async (userId: number, status: VerificationStatus) => {
     const keys = await redis.keys(`${this.cacheKey}:*`);
-    await redis.del(keys);
+    if(keys.length > 0) await redis.del(keys);
 
     const userVerification = await this.getUserVerification(userId);
     if (userVerification.status != 'PENDING') {
