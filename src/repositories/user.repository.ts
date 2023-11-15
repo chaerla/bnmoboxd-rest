@@ -68,9 +68,6 @@ class UserRepository {
   getCurators = async (options: GetUsersOptions) => {
     const take = options.take || 10;
     const skip = options.page && options.page - 1 > 0 ? (options.page - 1) * take : 0;
-    const where = {
-      isAdmin: false,
-    };
     const [curators, count] = await prisma.$transaction([
       prisma.user.findMany({
         select: {
@@ -79,12 +76,22 @@ class UserRepository {
           lastName: true,
           reviewCount: true,
         },
-        where,
+        where: {
+          isAdmin: false,
+          UserVerification: {
+            status: 'ACCEPTED',
+          },
+        },
         skip,
         take,
       }),
       prisma.user.count({
-        where,
+        where: {
+          isAdmin: false,
+          UserVerification: {
+            status: 'ACCEPTED',
+          },
+        },
       }),
     ]);
     return { curators, count };

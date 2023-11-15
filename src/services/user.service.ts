@@ -3,9 +3,8 @@ import { RegisterDto } from '@/domain/dtos/register.dto';
 import bcrypt from 'bcrypt';
 import BadRequest from '@errors/bad-request.error';
 import Unauthorized from '@errors/unauthorized.error';
-import { LoginDto } from '@/domain/dtos/login.dto';
+import { AuthTokenDto, LoginDto } from '@/domain/dtos/login.dto';
 import NotFound from '@errors/not-found.error';
-import { type User } from '@prisma/client';
 import { SECRET_KEY } from '@config';
 import jwt from 'jsonwebtoken';
 import redis from '@utils/redis';
@@ -37,7 +36,7 @@ class UserService {
 
     delete user.password;
 
-    return { auth: { user, access_token: await this.generateToken(user) } };
+    return { auth: { user, access_token: await this.generateToken({ ...user }) } };
   };
 
   register = async (registerDto: RegisterDto) => {
@@ -49,16 +48,16 @@ class UserService {
     }
 
     const keys = await redis.keys(`userVerifications:*`);
-    if(keys.length > 0) await redis.del(keys);
+    if (keys.length > 0) await redis.del(keys);
 
     registerDto.password = await bcrypt.hash(registerDto.password, 10);
     const newUser = await this.userRepository.addUser(registerDto);
     delete newUser.password;
 
-    return { auth: { user: newUser, access_token: await this.generateToken(newUser) } };
+    return { auth: { user: newUser, access_token: await this.generateToken({ ...newUser }) } };
   };
 
-  generateToken = async (user: User) => {
+  generateToken = async (user: AuthTokenDto) => {
     return await jwt.sign({ user }, SECRET_KEY);
   };
 }

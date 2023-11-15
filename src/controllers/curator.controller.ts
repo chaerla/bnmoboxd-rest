@@ -40,8 +40,14 @@ class CuratorController implements Controller {
     return { data, message: "Successfully updated curator's profile!" };
   };
 
+  getCuratorProfile = async (req: Request) => {
+    const data = await this.curatorService.getCuratorProfile(req.user.id);
+    return { data };
+  };
+
   private initializeRoutes() {
     this.router.get(`${this.path}/`, [this.authMiddleware.validateApiKey], validateRequest(getCuratorsSchema), handleRequest(this.getCurators));
+    this.router.get(`${this.path}/profile`, [this.authMiddleware.verifyUser], handleRequest(this.getCuratorProfile));
     this.router.get(
       `${this.path}/:username`,
       [this.authMiddleware.validateApiKey],

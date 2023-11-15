@@ -19,6 +19,12 @@ class CuratorService {
   updateCuratorDetails = async (data: IUpdateUser, userId: number) => {
     return await this.userRepository.updateUser(data, userId);
   };
+
+  getCuratorProfile = async userId => {
+    const user = await this.userRepository.getUserById(userId);
+    delete user.password;
+    return user;
+  };
 }
 
 export default CuratorService;
