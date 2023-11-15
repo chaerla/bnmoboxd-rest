@@ -20,6 +20,11 @@ class SubscriptionService {
     const success = await this.soapApi.updateSubscriptionStatus(options);
     if (!success) throw new ApplicationError();
   };
+
+  getSubscriptionCount = async (curatorUsername: string) => {
+    const count = await this.soapApi.getSubscriberCount(curatorUsername);
+    return count;
+  };
 }
 
 export default SubscriptionService;

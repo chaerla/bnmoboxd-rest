@@ -75,6 +75,8 @@ class UserRepository {
           firstName: true,
           lastName: true,
           reviewCount: true,
+          profileImage: true,
+          bio: true,
         },
         where: {
           isAdmin: false,
@@ -111,6 +113,8 @@ class UserRepository {
       firstName: true,
       lastName: true,
       reviewCount: true,
+      profileImage: true,
+      bio: true,
     };
 
     if (options.reviews === 'true') {

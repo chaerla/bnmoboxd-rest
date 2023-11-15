@@ -31,6 +31,7 @@ class CuratorController implements Controller {
   };
 
   uploadCuratorImage = async (req: RequestWithUser) => {
+    console.log(req.file.filename);
     const data = await this.curatorService.updateCuratorDetails({ profileImage: req.file.filename }, req.user.id);
     return { data, message: 'Successfully updated profile image!' };
   };
@@ -47,7 +48,7 @@ class CuratorController implements Controller {
 
   private initializeRoutes() {
     this.router.get(`${this.path}/`, [this.authMiddleware.validateApiKey], validateRequest(getCuratorsSchema), handleRequest(this.getCurators));
-    this.router.get(`${this.path}/profile`, [this.authMiddleware.verifyUser], handleRequest(this.getCuratorProfile));
+    this.router.get(`/profile`, [this.authMiddleware.verifyUser], handleRequest(this.getCuratorProfile));
     this.router.get(
       `${this.path}/:username`,
       [this.authMiddleware.validateApiKey],

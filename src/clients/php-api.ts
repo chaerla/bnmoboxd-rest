@@ -29,7 +29,10 @@ class PhpApi {
   searchFilmTitlesById = async (option: SearchFilmsOption) => {
     const res = await this.api.get(`/films?&filmIds=${option.filmIds.join(',')}`);
     return res.data.films.reduce((acc, film) => {
-      acc[film.id] = film.title;
+      acc[film.id] = {
+        title: film.title,
+        imagePath: film.image_path,
+      };
       return acc;
     }, {});
   };

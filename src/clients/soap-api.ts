@@ -62,8 +62,18 @@ class SoapApi {
 
   updateSubscriptionStatus = async options => {
     const funcName = 'update';
-    
+
     const response = await this.postSubscriptionReq(funcName, options);
+    console.log(`[SoapApi] Response from SOAP API: ${JSON.stringify(response)}`);
+    return response;
+  };
+
+  getSubscriberCount = async (curatorUsername: string) => {
+    const funcName = 'count';
+    const payload = {
+      curatorUsername,
+    };
+    const response = await this.postSubscriptionReq(funcName, payload);
     console.log(`[SoapApi] Response from SOAP API: ${JSON.stringify(response)}`);
     return response;
   };
