@@ -2,6 +2,7 @@ import express from 'express';
 import Controller from '@interfaces/controller';
 import compression from 'compression';
 import helmet from 'helmet';
+import hpp from 'hpp';
 import cors from 'cors';
 import { errorMiddleware } from '@middlewares/error.middleware';
 import { CREDENTIALS, ENV, ORIGIN, PORT } from '@config';
@@ -21,6 +22,7 @@ class Application {
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(compression());
     this.app.use(helmet());
+    this.app.use(hpp());
     this.app.use(express.urlencoded({ extended: true }));
     this.initializeRoutes(controllers);
     this.app.use(errorMiddleware);
