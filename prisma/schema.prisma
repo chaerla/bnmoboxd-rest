@@ -22,6 +22,8 @@ model User {
   lastName         String?           @map("last_name")
   isAdmin          Boolean           @default(false) @map("is_admin")
   reviewCount      Int               @default(0)
+  profileImage     String?           @map("profile_image")
+  bio              String?
   Review           CuratorReview[]
   UserVerification UserVerification?
 
