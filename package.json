@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "pnpm run build && cross-env ENV=production node dist/server.js",
+    "start": "pnpm run build && prisma migrate dev && prisma db seed && cross-env ENV=production node dist/server.js",
     "dev": "cross-env ENV=development nodemon",
     "build": "pnpm run build:swc",
     "build:swc": "swc src -d dist --source-maps --copy-files",

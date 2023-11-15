@@ -17,7 +17,7 @@ async function seed() {
   const userVerifications = [];
   for (let i = 1; i <= 10; i++) {
     const user = {
-      username: `user${i}`,
+      username: `curator${i}`,
       password,
       email: `curator${i}@example.com`,
       firstName: `Curator`,
