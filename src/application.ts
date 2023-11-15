@@ -23,7 +23,6 @@ class Application {
     this.app.use(compression());
     this.app.use(helmet());
     this.app.use(hpp());
-    this.app.use(express.urlencoded({ extended: true }));
     this.initializeRoutes(controllers);
     this.app.use(errorMiddleware);
   }
