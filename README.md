@@ -77,3 +77,22 @@ This service provides the following API endpoints
 | Rachel Gabriela Chen           | 13521044 |
 | Muhammad Equilibrie Fajria     | 13521047 |
 | Jericho Russel Sebastian       | 13521107 |
+
+## OWASP
+**1. HTTP Parameter Pollution**
+This app is secure from `HTTP Parameter Pollution` Attack. 
+HPP (HTTP Parameter Pollution) is a vulnerability that arises when multiple values are assigned to the same parameter in an HTTP request, leading to unexpected behavior in the application. This can occur due to the way the application processes and interprets the input parameters.
+
+This service uses the library `hpp` to prevent HPP attack.
+![image](documentations/hpp.png)
+
+In the image below, the service only reads the last parameter for `page` which is 2
+![image](documentations/hpp-2.png)
+
+**2. JWT Attack**
+This app is secure from `JWT Attack`. JWT injection occurs when an attacker manipulates the content of a JWT to tamper with the claims or inject additional data. For example, an attacker might modify the user ID claim to impersonate another user. There are other types of JWT Attack as well, such as Brute Force etc.
+
+This app uses:
+1. JWT verify to authenticate user instead of JWT decode
+2. Hashed secret key that can't be brute forced
+![image](documentations/jwt.png)
