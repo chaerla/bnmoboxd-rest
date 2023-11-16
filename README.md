@@ -44,27 +44,27 @@ This service provides the following API endpoints
 4. Open terminal and run `docker compose up -d`
 
 ## Task
-| 13521044                     | 13521047 | 13521107 |
-|------------------------------|----------|----------|
-| Curator Review CRUD          |          |          |
-| GET films from PHP           |          |          |
-| Auth                         |          |          |
-| Project Initialization       |          |          |
-| Middlewares                  |          |          |
-| Error Handling               |          |          |
-| Docker                       |          |          |
-| User Verification Repository |          |          |
-| PHP Client                   |          |          |
-| SOAP Client                  |          |          |
-| Upload Profile Picture       |          |          |
-| Edit Profile                 |          |          |
-|                              |          |          |
-|                              |          |          |
-|                              |          |          |
-|                              |          |          |
-|                              |          |          |
-|                              |          |          |
-|                              |          |          |
+| 13521044                     | 13521047                                 | 13521107 |
+|------------------------------|------------------------------------------|----------|
+| Curator Review CRUD          | User Verification Service and Controller |          |
+| GET films from PHP           | Review and Testing                       |          |
+| Auth                         |                                          |          |
+| Project Initialization       |                                          |          |
+| Middlewares                  |                                          |          |
+| Error Handling               |                                          |          |
+| Docker                       |                                          |          |
+| User Verification Repository |                                          |          |
+| PHP Client                   |                                          |          |
+| SOAP Client                  |                                          |          |
+| Upload Profile Picture       |                                          |          |
+| Edit Profile                 |                                          |          |
+|                              |                                          |          |
+|                              |                                          |          |
+|                              |                                          |          |
+|                              |                                          |          |
+|                              |                                          |          |
+|                              |                                          |          |
+|                              |                                          |          |
 
 
 ## Bonus
