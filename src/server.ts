@@ -6,6 +6,7 @@ import FilmController from '@controllers/film.controller';
 import SubscriptionController from '@controllers/subscription.controller';
 import CuratorController from '@controllers/curator.controller';
 import UserVerificationController from './controllers/user-verification.controller';
+import EmailController from '@controllers/email.controller';
 
 const app = new Application([
   new AuthController(),
@@ -15,5 +16,6 @@ const app = new Application([
   new SubscriptionController(),
   new CuratorController(),
   new UserVerificationController(),
+  new EmailController(),
 ]);
 app.listen();
