@@ -31,7 +31,6 @@ class CuratorController implements Controller {
   };
 
   uploadCuratorImage = async (req: RequestWithUser) => {
-    console.log(req.file.filename);
     const data = await this.curatorService.updateCuratorDetails({ profileImage: req.file.filename }, req.user.id);
     return { data, message: 'Successfully updated profile image!' };
   };

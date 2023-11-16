@@ -104,7 +104,6 @@ class UserRepository {
       isAdmin: false,
       username: curatorUsername,
     };
-    console.log(where);
     const take = options.take || 10;
     const skip = options.page && options.page - 1 > 0 ? (options.page - 1) * take : 0;
     const select = {
