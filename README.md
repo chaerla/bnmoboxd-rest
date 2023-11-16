@@ -42,6 +42,7 @@ This service provides the following API endpoints
 2. Make a env file `.env.production`
 3. Fill the file `.env.production` referring to `env.example`, make sure to include the correct endpoint for the other services
 4. Open terminal and run `docker compose up -d`
+5. From the docker terminal do `npx prisma db seed` or alternatively `pnpm run prisma:seed` 
 
 ## Task
 | 13521044                     | 13521047                                 | 13521107                     |
