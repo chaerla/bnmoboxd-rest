@@ -5,6 +5,45 @@ This service should be used along with:
 - [BNMOBOXD SOAP](https://gitlab.informatika.org/if3110-2023-01-16/bnmoboxd-soap-service)
 - [BNMOBOXD App](https://gitlab.informatika.org/if3110-2023-01-16/bnmoboxd)
 
+## Database Schema
+| User              |
+| ----------------- |
+| **id**            |
+| username          |
+| password          |
+| email             |
+| firstName         |
+| lastName          |
+| isAdmin           |
+| reviewCount       |
+| profileImage      |
+| bio               |
+| Review            |
+
+
+| CuratorReview |
+| ------------- |
+| **id**        |
+| rating        |
+| review        |
+| filmId        |
+| userId        |
+| createdAt     |
+| updatedAt     |
+
+FK:
+
+CuratorReview(userId) -> user(id)
+
+| UserVerification  |
+| ----------------- |
+| **userId**        |
+| status            |
+| createdAt         |
+
+FK:
+
+UserVerification(userId) -> user(id)
 
 ## Features
 This service provides the following API endpoints
@@ -47,9 +86,9 @@ This service provides the following API endpoints
 ## Task
 | 13521044                     | 13521047                                 | 13521107                     |
 |------------------------------|------------------------------------------|------------------------------|
-| Curator Review CRUD          | User Verification Service and Controller | Get subscriptions from SOAP  |
-| GET films from PHP           | Review and Testing                       | Update subscriptions on SOAP |
-| Auth                         |                                          | Review and Testing           |
+| Curator Review CRUD          | User Verification Service                | Get subscriptions from SOAP  |
+| GET films from PHP           | User Verification Controller             | Update subscriptions on SOAP |
+| Auth                         | Review and Testing                       | Review and Testing           |
 | Project Initialization       |                                          |                              |
 | Middlewares                  |                                          |                              |
 | Error Handling               |                                          |                              |
