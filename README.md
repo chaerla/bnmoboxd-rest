@@ -58,13 +58,6 @@ This service provides the following API endpoints
 | SOAP Client                  |                                          |          |
 | Upload Profile Picture       |                                          |          |
 | Edit Profile                 |                                          |          |
-|                              |                                          |          |
-|                              |                                          |          |
-|                              |                                          |          |
-|                              |                                          |          |
-|                              |                                          |          |
-|                              |                                          |          |
-|                              |                                          |          |
 
 
 ## Bonus
